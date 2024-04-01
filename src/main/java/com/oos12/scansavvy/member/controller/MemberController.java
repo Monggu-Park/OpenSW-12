@@ -1,6 +1,7 @@
 package com.oos12.scansavvy.member.controller;
 
 import com.oos12.scansavvy.member.dto.MemberDTO;
+import com.oos12.scansavvy.member.dto.AccessDTO;
 import com.oos12.scansavvy.member.model.Member;
 import com.oos12.scansavvy.member.service.MemberServiceImpl;
 import com.oos12.scansavvy.member.service.ObjectMapperUtils;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/members")
@@ -26,9 +28,20 @@ public class MemberController {
         return ObjectMapperUtils.mapAll(memberService.findAll(), MemberDTO.class);
     }
 
-    @PostMapping(value = "/login")
-    public MemberDTO loginOrSignIn(@RequestBody MemberDTO memberDTO){
-        return ObjectMapperUtils.map(memberService.loginOrSignIn(memberDTO.getEmail(), memberDTO.getPassword()), MemberDTO.class);
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> loginOrSignIn(@RequestBody AccessDTO accessDTO){
+        Member member = memberService.findByEmail(accessDTO.getEmail());
+        String responseMessage = "Login Success";
+        if (member != null && Objects.equals(member.getEmail(), accessDTO.getEmail())){
+            if (!Objects.equals(member.getPassword(), accessDTO.getPassword())){
+                responseMessage = "Password wrong";
+                return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+            }
+        }else {
+            responseMessage = "Login Failed";
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(member, HttpStatus.OK);
     }
     @GetMapping(value = "/byEmail/{email}")
     public MemberDTO getMemberByEmail(@PathVariable("email") String email){
