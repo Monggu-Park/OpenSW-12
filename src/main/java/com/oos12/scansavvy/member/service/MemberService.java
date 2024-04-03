@@ -1,4 +1,15 @@
 package com.oos12.scansavvy.member.service;
 
-public class MemberService {
+import com.oos12.scansavvy.member.model.Member;
+
+import java.util.List;
+
+public interface MemberService {
+    List<Member> findAll();
+    Member findByEmail(String email);
+    Member findByPhone(String phone);
+    List<Member> findAllByOrderByNameDesc();
+    Member saveOrUpdateMember(Member member);
+    void deleteMemberById(String id);
+//    public String loginOrSignIn(String email, String password);
 }

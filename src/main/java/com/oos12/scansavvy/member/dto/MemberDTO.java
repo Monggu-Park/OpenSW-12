@@ -11,8 +11,19 @@ import lombok.ToString;
 @ToString
 
 public class MemberDTO {
-    private Long id;
-    private String memberEmail;
-    private String memberPassword;
-    private String memberName;
+    private String id;
+    private Long idx;
+    private String name;
+    private String email;
+    private String password;
+    private String phone;
+
+    public MemberDTO(String id, String name, String email, String password, String phone){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+
+    }
 }
