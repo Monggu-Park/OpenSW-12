@@ -11,5 +11,4 @@ public interface MemberService {
     List<Member> findAllByOrderByNameDesc();
     Member saveOrUpdateMember(Member member);
     void deleteMemberById(String id);
-//    public String loginOrSignIn(String email, String password);
 }
