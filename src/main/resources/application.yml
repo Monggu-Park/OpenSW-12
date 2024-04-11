@@ -16,6 +16,17 @@ spring:
         jdbc-url: jdbc:mongodb://localhost:27017/test
     main:
       allow-bean-definition-overriding: true
+    thymeleaf:
+      cache: false
+      check-template-location: true
+      prefix: classpath:/templates/
+      suffix: .html
+      mode: DEBUG
+
+naver:
+  service:
+    url : https://nkgni4pqcj.apigw.ntruss.com/custom/v1/29889/001c1d3c55d655539d49f75d0442857b3a534af173ce8574830b6395a4183e04/general
+    secretKey : TFdVUVFVZERYUkxtb05DVkpGVFNJY1dhaXJvaFhHenc=
 
 logging:
   level:

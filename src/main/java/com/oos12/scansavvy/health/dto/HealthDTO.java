@@ -12,6 +12,8 @@ import lombok.ToString;
 
 public class HealthDTO {
     private String id;
+    private String year;
+    private String name;
     public HealthDTO(String id){
         this.id = id;
     }
