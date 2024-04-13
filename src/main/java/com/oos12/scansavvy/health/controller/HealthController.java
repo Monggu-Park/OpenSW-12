@@ -1,5 +1,6 @@
 package com.oos12.scansavvy.health.controller;
 
+import com.oos12.scansavvy.health.service.EeveServiceImpl;
 import com.oos12.scansavvy.health.service.HealthServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ import java.util.List;
 public class HealthController {
     @Autowired
     private HealthServiceImpl healthService;
+    @Autowired
+    private EeveServiceImpl eeveService;
 
     @Value("${naver.service.secretKey}")
     private String secretKey;
@@ -56,7 +59,7 @@ public class HealthController {
         String naverSecretKey = secretKey;
         File tempFile = File.createTempFile("temp", file.getOriginalFilename());
         file.transferTo(tempFile);
-        List<String> result = healthService.callApi("POST", tempFile.getPath(), naverSecretKey, "jpg");
+        List<String> result = healthService.callApi("POST", tempFile.getPath(), naverSecretKey, "png");
         tempFile.delete();
         model.addAttribute("ocrResult", result);
         return "ocr-result";
