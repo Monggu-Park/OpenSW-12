@@ -3,7 +3,12 @@ server:
   port: 8080
 #JPA
 spring:
-#  data:
+    ai:
+      ollama:
+        base-url: http://localhost:11434
+        chat:
+          model: Eeve:latest
+  #  data:
 #    mongodb:
 #      uri: mongodb://localhost:27017/test
 #      username: root
