@@ -3,20 +3,19 @@ server:
   port: 8080
 #JPA
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ScanSavvy
-    username: root
-    password: 4788
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/test
+#      username: root
+#      password: 4788
+    datasource:
+      driver-class-name: com.mongodb.jdbc.MongoDriver
+      username: root
+      password: 4788
+      hikari:
+        jdbc-url: jdbc:mongodb://localhost:27017/test
+    main:
+      allow-bean-definition-overriding: true
 
 logging:
   level:

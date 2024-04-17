@@ -1,7 +1,14 @@
 package com.oos12.scansavvy.member.repository;
 
-import com.oos12.scansavvy.member.entity.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.oos12.scansavvy.member.model.Member;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+import java.util.List;
+
+public interface MemberRepository extends MongoRepository<Member, String> {
+
+    Member findByEmail(String email);
+    Member findByPhone(String phone);
+
+    List<Member> findAllByOrderByNameDesc();
 }
