@@ -1,9 +1,10 @@
 // Signup.js
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Signup.css";
 
 const Signup = () => {
+    const history = useHistory();
     const [signupInfo, setSignupInfo] = useState({
         username: "",
         id: "",
@@ -46,9 +47,8 @@ const Signup = () => {
             setPasswordMismatch(true);
         } else {
             setPasswordMismatch(false);
-            // 회원가입 처리 로직을 여기에 작성하세요.
             try {
-                const response = await fetch("http://your-backend-url/signup", {
+                const response = await fetch("/members/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -58,10 +58,15 @@ const Signup = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.isMember) {
+                    if (data === "Member added success") {
+                        alert("회원가입 완료")
+                        history.push("/");
+                    } else if (data === "This Email already Exist") {
+                        // 이미 회원일 경우 signup.js로 남아있음
                         alert("이미 회원입니다.");
+                        history.push("/login")
                     } else {
-                        alert("회원가입 성공!");
+                        alert(data);
                     }
                 } else {
                     console.error("회원가입 실패");
