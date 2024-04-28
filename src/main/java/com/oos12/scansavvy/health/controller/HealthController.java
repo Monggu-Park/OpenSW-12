@@ -1,5 +1,6 @@
 package com.oos12.scansavvy.health.controller;
 
+import com.oos12.scansavvy.health.model.EeveResponse;
 import com.oos12.scansavvy.health.service.EeveServiceImpl;
 import com.oos12.scansavvy.health.service.HealthServiceImpl;
 import lombok.RequiredArgsConstructor;
