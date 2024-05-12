@@ -8,6 +8,7 @@ class ScanSavvyApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

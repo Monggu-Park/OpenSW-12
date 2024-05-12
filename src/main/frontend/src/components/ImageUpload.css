@@ -1,0 +1,49 @@
+.container_upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.upload-container {
+    border: 2px dashed #99daff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 80%;
+    height: 70%;
+    text-align: center;
+    background-color: #99daff;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.upload-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.image-preview {
+    margin-top: 20px;
+    max-width: 90%;
+    max-height: 100px;
+}
+
+.uploadInfo {
+    margin-top: 30px;
+    font-size: 50px;
+    font-weight: 500;
+}
+
+.imageicon {
+    margin-top: 40px;
+    width: 200px;
+    height: 200px;
+}
