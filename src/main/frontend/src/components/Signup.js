@@ -48,7 +48,7 @@ const Signup = () => {
         } else {
             setPasswordMismatch(false);
             try {
-                const response = await fetch("/members/save", {
+                const response = await fetch("http://localhost:8000/members/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

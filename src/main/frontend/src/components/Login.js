@@ -22,7 +22,7 @@ const Login = () => {
         e.preventDefault();
         // 로그인 처리 로직을 여기에 작성하세요.
         try {
-            const response = await fetch("http://your-backend-url/login", {
+            const response = await fetch("http://localhost:8000/members/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
