@@ -8,13 +8,6 @@ spring:
         base-url: http://localhost:11434
         chat:
           model: Eeve:latest
-      openai:
-        chat:
-          options:
-            model: gpt-3.5-turbo
-        base-url:
-
-        api-key: sk-proj-PVooJy4G4k9VURFIiW0mT3BlbkFJ3gdbaXh2Pmg25QgPtLoI
 
   #  data:
 #    mongodb:
