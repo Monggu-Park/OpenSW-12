@@ -1,0 +1,41 @@
+.container_sheet {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 20px 10px 20px;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.sheet {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    background-color: #99daff;
+    border-radius: 10px;
+    padding: 10px 30px;
+    text-align: center;
+    margin: auto 20px;
+}
+
+.content_sheet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.text_sheet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.text_sheet.info {
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 200px;
+    white-space: nowrap;
+}
