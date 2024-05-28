@@ -7,22 +7,20 @@ const Login = () => {
     const [loginInfo, setLoginInfo] = useState({
         id: "",
         password: "",
-        remember: false,
     });
 
     const handleChange = (e) => {
-        const { name, value, checked, type } = e.target;
+        const { name, value } = e.target;
         setLoginInfo({
             ...loginInfo,
-            [name]: type === "checkbox" ? checked : value,
+            [name]: value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 로그인 처리 로직을 여기에 작성하세요.
         try {
-            const response = await fetch("http://localhost:8000/members/login", {
+            const response = await fetch("http://localhost:8000/members/login", { // <-- 백엔드로 요청하는 부분
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,14 +29,9 @@ const Login = () => {
             });
 
             if (response.ok) {
-                history.push("/");
-
-                const buttonAdvHandler = () => {
-                    history.push("/ImageUpload");
-                };
-                window.addEventListener("buttonAdvClicked", buttonAdvHandler);
+                history.push("/ImageUpload");
             } else {
-                console.error("로그인 실패");
+                alert("로그인 실패");
             }
         } catch (error) {
             console.error("오류 발생:", error);
@@ -52,7 +45,7 @@ const Login = () => {
                 <input
                     type="text"
                     name="id"
-                    value={loginInfo.username}
+                    value={loginInfo.id}
                     onChange={handleChange}
                     className="input-field"
                     placeholder="아이디"
