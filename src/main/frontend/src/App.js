@@ -14,9 +14,9 @@ function App() {
         <div className="App">
           <Header />
           <Route path="/" exact component={Advertisement} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/image-upload" component={ImageUpload} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/image-" component={ImageUpload} />
           <Footer />
         </div>
       </Router>
