@@ -46,8 +46,18 @@ const Signup = () => {
                     body: JSON.stringify(signupInfo),
                 });
 
+                const responseText = await response.text();  // 응답을 텍스트로 받기
+
+                // JSON 파싱을 시도하고, 실패하면 그대로 문자열로 처리
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (error) {
+                    data = responseText;
+                }
+                console.log(data)
+                console.log(response)
                 if (response.ok) {
-                    const data = await response.json();
                     if (data === "Member added success") {
                         alert("회원가입 완료");
                         history.push("/");
