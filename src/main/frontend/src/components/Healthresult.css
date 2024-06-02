@@ -1,0 +1,24 @@
+.health-result {
+    text-align: center;
+    padding: 20px;
+
+}
+
+.user-status {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #99daff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 960px;
+    margin: 0 auto;
+    height: 500px;
+
+}

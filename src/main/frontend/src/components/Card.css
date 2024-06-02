@@ -1,0 +1,27 @@
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    height: 150px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+.card.abnormal {
+    border: 2px solid red;
+}
+
+.card-status {
+    font-size: 14px;
+    color: green;
+}
+
+.card.abnormal .card-status {
+    color: red;
+}
