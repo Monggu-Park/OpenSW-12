@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import "./ImageUpload.css";
 import imageicon from "../assets/imageicon.png";
+import { useHistory } from "react-router-dom";
 
 const ImageUpload = () => {
     const [image, setImage] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState("");
-    const [extractedText, setExtractedText] = useState("");
+    const history = useHistory();
 
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
             setImage(img);
-            setPreviewUrl(URL.createObjectURL(img));
             processImage(img);
         }
     };
@@ -19,10 +18,10 @@ const ImageUpload = () => {
     // OCR 처리 함수
     const processImage = async (imgFile) => {
         const formData = new FormData();
-        formData.append('image', imgFile);
+        formData.append('file', imgFile);
 
         try {
-            const response = await fetch('/api/ocr', {
+            const response = await fetch('http://34.64.241.205:8080/uploadAndOcr', {
                 method: 'POST',
                 body: formData
             });
@@ -32,7 +31,7 @@ const ImageUpload = () => {
             }
 
             const result = await response.json();
-            setExtractedText(result);
+            history.push({pathname: "/healthresult", state:{ocrResult: result}});
         } catch (error) {
             console.error('Error processing image:', error);
         }
@@ -46,7 +45,7 @@ const ImageUpload = () => {
             >
                 <div className="uploadInfo">건강검진표 사진을 등록하세요</div>
                 <br/>
-                <img src={imageicon} alt="이미지아이콘" className="imageicon"/>{" "}
+                <img src={imageicon} alt="이미지아이콘" className="imageicon"/>
                 <input
                     id="fileInput"
                     type="file"
@@ -55,12 +54,6 @@ const ImageUpload = () => {
                     accept="image/*"
                 />
             </div>
-            {previewUrl && (
-                <div>
-                    <img src={previewUrl} alt="Image Preview" className="image-preview"/>
-                    <div className="extracted-text">{extractedText}</div>
-                </div>
-            )}
         </div>
     );
 };

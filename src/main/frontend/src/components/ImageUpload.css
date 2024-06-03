@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     height: 600px;
-    font-family: "Noto Sans", sans-serif;
 }
 
 .upload-container {
@@ -28,12 +27,6 @@
 
 .hidden {
     display: none;
-}
-
-.image-preview {
-    margin-top: 20px;
-    max-width: 90%;
-    max-height: 100px;
 }
 
 .uploadInfo {

@@ -37,7 +37,7 @@ const Signup = () => {
             alert("Passwords do not match");
         } else {
             try {
-                const response = await fetch("http://localhost:8080/members/save", {
+                const response = await fetch("http://34.64.241.205:8080/members/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./Sheet.css";
 
-function Sheet() {
+function Sheet() {/*
+    const [ocrResult, setOcrResult] = useState(null);
     const history = useHistory();
+
+    useEffect(() => {
+        const result = localStorage.getItem("ocrResult");
+        if (result) {
+            setOcrResult(JSON.parse(result));
+        }
+    }, []);*/
+/*
+    if (!ocrResult) {
+        return <div>Loading...</div>;
+    }*/
+
     return (
         <div className="container_sheet">
             <div className="sheet">

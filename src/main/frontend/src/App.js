@@ -8,9 +8,8 @@ import Signup from "./components/Signup.js";
 import ImageUpload from "./components/ImageUpload.js";
 import Sheet from "./components/Sheet.js";
 import Loading from "./components/Loading.js";
-import Healthresult from "./components/Healthresult.js";
+import HealthResult from "./components/HealthResult.js";
 import Recommend from "./components/Recommend.js";
-
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -26,7 +25,7 @@ function App() {
                     <Route path="/image-" component={ImageUpload} />
                     <Route path="/sheet" component={Sheet} />
                     <Route path="/loading" component={Loading} />
-                    <Route path="/healthresult" component={Healthresult} />
+                    <Route path="/healthresult" component={HealthResult} />
                     <Route path="/recommend" component={Recommend} />
 
                 </Switch>

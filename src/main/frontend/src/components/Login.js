@@ -20,7 +20,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/members/login", { // <-- 백엔드로 요청하는 부분
+            const response = await fetch("http://34.64.241.205:8080/members/login", { // <-- 백엔드로 요청하는 부분
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

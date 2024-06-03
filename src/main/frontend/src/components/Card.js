@@ -1,14 +1,11 @@
 import React from 'react';
 import './Card.css';
 
-const Card = ({ title, status }) => {
+const Card = ({ title, status, className }) => {
     return (
-        <div className={`card ${status === '비정상' ? 'abnormal' : ''}`}>
-            <div className="card-content">
-                <p className="card-title">{title}</p>
-                <p className="card-graph">그래프</p>
-                <p className="card-status">{status}</p>
-            </div>
+        <div className={`card ${className}`}>
+            <h3>{title}</h3>
+            <p className={`card-status ${className}`}>{status}</p>
         </div>
     );
 };
