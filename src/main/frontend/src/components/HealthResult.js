@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './HealthResult.css';
 import Card from './Card.js';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const HealthResult = () => {
     const location = useLocation();
+    const history = useHistory();
     const [ocrResult, setOcrResult] = useState(null);
 
     useEffect(() => {
@@ -79,7 +80,9 @@ const HealthResult = () => {
         const [systolic, diastolic] = value.split('/').map(Number);
         return !isNaN(systolic) && !isNaN(diastolic) && (systolic <= 139 || diastolic <= 89);
     };
-
+    const handleRecommendClick = () => {
+        history.push('/recommend', { name: ocrResult.Name });
+    };
     const renderCard = (title, value, min = null, max = null, isBloodPressure = false) => {
         let className = '';
         if (value === 'N/A' || value === null) {
@@ -119,6 +122,8 @@ const HealthResult = () => {
                         {renderCard("자궁경부 도말 검사", ocrResult.CervicalSmear)}
                         {renderCard("심전도 검사", ocrResult.Electrocardiogram)}
                     </div>
+                    <button className="next-button" onClick={handleRecommendClick}>추천 소견 보러가기</button>
+
                 </>
             ) : (
                 <div className="cards-container">
@@ -142,6 +147,7 @@ const HealthResult = () => {
                     {renderCard("심전도 검사", null)}
                 </div>
             )}
+
         </div>
     );
 };

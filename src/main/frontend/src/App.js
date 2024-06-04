@@ -22,12 +22,11 @@ function App() {
                     <Route path="/" exact component={Advertisement} />
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={Signup} />
-                    <Route path="/image-" component={ImageUpload} />
+                    <Route path="/image" component={ImageUpload} />
                     <Route path="/sheet" component={Sheet} />
                     <Route path="/loading" component={Loading} />
                     <Route path="/healthresult" component={HealthResult} />
                     <Route path="/recommend" component={Recommend} />
-
                 </Switch>
                 <Footer />
             </div>

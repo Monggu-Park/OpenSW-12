@@ -20,3 +20,20 @@
     margin: 0 auto;
     margin-bottom: 60px !important;
 }
+
+.next-button {
+    background-color: #FFFCB9;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.next-button:hover {
+    background-color: #fdf76a;
+}

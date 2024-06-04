@@ -11,33 +11,38 @@
 
 .recommendations {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
     background-color: #99daff;
     padding: 20px;
     border-radius: 10px;
     max-width: 960px;
     margin: 0 auto;
-    height: 500px;
 }
 
 .recommend-card {
-    background-color: #fffbea;
+    background-color: white;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: left;
+    transition: transform 0.2s ease-in-out;
 }
 
-.highlight {
+/*.recommend-card:hover {
+    transform: scale(1.05);
+}*/
+
+.recommendation-loading, .recommendation-error, .recommendation-result {
+    font-size: 20px;
+    color: #555;
     font-weight: bold;
-    color: #ff6b6b;
-    margin-bottom: 10px;
+
 }
 
 .confirm-button {
-    background-color: #fffbea;
+    background-color: #FFFCB9;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -45,8 +50,9 @@
     font-weight: bold;
     cursor: pointer;
     margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 .confirm-button:hover {
-    background-color: #ffeb3b;
+    background-color: #fdf76a;
 }
