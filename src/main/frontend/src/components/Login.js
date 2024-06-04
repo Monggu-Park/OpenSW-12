@@ -5,7 +5,7 @@ import "./Login.css";
 const Login = () => {
     const history = useHistory();
     const [loginInfo, setLoginInfo] = useState({
-        id: "",
+        email: "",
         password: "",
     });
 
