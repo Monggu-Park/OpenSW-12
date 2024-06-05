@@ -8,10 +8,10 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 function Sheet(props) {
     const [ocrText, setOcrText] = useState("");
     const [loading, setLoading] = useState(true);
-    const history = useHistory();
     useEffect(() => {
         fetchOcrResult();
     }, []);
+    const history = useHistory();
     /*
     const [ocrResult, setOcrResult] = useState(null);
     const history = useHistory();
@@ -22,10 +22,10 @@ function Sheet(props) {
             setOcrResult(JSON.parse(result));
         }
     }, []);*/
-/*
-    if (!ocrResult) {
-        return <div>Loading...</div>;
-    }*/
+    /*
+        if (!ocrResult) {
+            return <div>Loading...</div>;
+        }*/
     const fetchOcrResult = async () => {
         const url = "http://34.64.241.205:8080";
         const session = getSessionCookie();
@@ -68,7 +68,7 @@ function Sheet(props) {
                                 {ocrText ? (
                                     <>
                                         <p>{ocrText}</p>
-                                        <button onClick={handleSheetClick} className="gobutton">결과 보러가기</button>
+                                        <button onClick={handleSheetClick} className="goButton">결과 보러가기</button>
                                     </>
                                 ) : (
                                     "이미지를 업로드하면 여기에 검진 결과가 표시됩니다."
