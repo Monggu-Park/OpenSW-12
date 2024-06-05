@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./Advertisement.css";
 import healthImage from "../assets/ad_image.png";
+import { SessionContext } from "../utils/session.js";
 
 function Advertisement() {
+    const session = useContext(SessionContext);
     const history = useHistory();
-
+    fetch("http://34.64.241.205:8080/health/allHealth")
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+            console.log(data);
+        });
     const handleSignupClick = () => {
-        history.push("/signup");
+        if (session.email !== null) {
+            history.push("/image-");
+        } else {
+            history.push("/signup");
+        }
     };
     return (
         <div className="container_adv">

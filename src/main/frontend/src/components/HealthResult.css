@@ -18,7 +18,7 @@
     border-radius: 10px;
     max-width: 960px;
     margin: 0 auto;
-    margin-bottom: 60px !important;
+    margin-bottom: 20px !important;
 }
 
 .next-button {
@@ -31,7 +31,7 @@
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 .next-button:hover {

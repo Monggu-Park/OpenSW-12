@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './HealthResult.css';
 import Card from './Card.js';
 import { useLocation, useHistory } from "react-router-dom";
+import { getSessionCookie } from "../utils/session.js";
 
 const HealthResult = () => {
+    const session = getSessionCookie();
     const location = useLocation();
     const history = useHistory();
     const [ocrResult, setOcrResult] = useState(null);
@@ -12,59 +14,26 @@ const HealthResult = () => {
         const fetchData = async () => {
             try {
                 if (location.state && location.state.ocrResult) {
+                    console.log("Data from location.state:", location.state.ocrResult);
                     setOcrResult(location.state.ocrResult);
-                } else {
-                    const response = await fetch('http://34.64.241.205:8080/OcrToJson');
+                } else if (session && session.email) {
+                    const url = "http://34.64.241.205:8080";
+                    const response = await fetch(url + "/health/byEmail/" + session.email);
                     if (!response.ok) {
                         throw new Error('Error fetching health data');
                     }
                     const data = await response.json();
-                    setOcrResult(data.HealthCheckResult);
+                    console.log("Data from server:", data);
+                    setOcrResult(data.HealthCheckResult || data);
                 }
             } catch (error) {
                 console.error('Error fetching health data:', error);
-                const tempData = {
-                    Name: "임채린",
-                    ResidentRegistrationNumber: "020210-1111111",
-                    BusinessName: "동국대학교",
-                    StoreName: "학교",
-                    DepartmentName: "데이터사이언스",
-                    Result: "Normal A (Healthy)",
-                    ReferenceValues: "정상",
-                    TestType: "Type 1 Checkup",
-                    Height: "170",
-                    Weight: "65",
-                    BodyFat: "20",
-                    Vision: "1.0",
-                    Hearing: "15",
-                    BloodPressure: "120/80",
-                    UrineTest: "Negative",
-                    Proteinuria: "6.0",
-                    pH: "7.0",
-                    Hemoglobin: "14",
-                    BloodSugar: "90",
-                    TotalCholesterol: "180",
-                    SerumGOT: "30",
-                    SerumGPT: "80",
-                    GammaGTP: "40",
-                    HepatitisTest: "정상",
-                    ChestXRay: "정상",
-                    CervicalSmear: "정상",
-                    Electrocardiogram: "정상",
-                    DoctorName: "의사명",
-                    OpinionsAndMeasures: "소견 및 조치사항",
-                    MedicalInstitutionCode: "요양기관기호",
-                    ExaminationAgencyName: "검진기관명",
-                    ExaminationDate: "검진일",
-                    JudgmentDate: "판정일",
-                    NotificationDate: "통보일"
-                };
-                setOcrResult(tempData);
+                setOcrResult(null);
             }
         };
 
         fetchData();
-    }, [location]);
+    }, [location, session]);
 
     const isNormalValue = (value, min, max) => {
         const num = parseFloat(value);
@@ -81,12 +50,13 @@ const HealthResult = () => {
         return !isNaN(systolic) && !isNaN(diastolic) && (systolic <= 139 || diastolic <= 89);
     };
     const handleRecommendClick = () => {
-        history.push('/recommend', { name: ocrResult.Name });
+        history.push('/recommend', { name: ocrResult ? ocrResult.Name : 'N/A' });
     };
     const renderCard = (title, value, min = null, max = null, isBloodPressure = false) => {
         let className = '';
-        if (value === 'N/A' || value === null) {
+        if (value === 'N/A' || value === null || value === undefined) {
             className = '';
+            value='N/A';
         } else if (isBloodPressure) {
             className = isBloodPressureNormal(value) ? 'normal' : 'abnormal';
         } else if (min !== null && max !== null) {
@@ -101,11 +71,11 @@ const HealthResult = () => {
         <div className="health-result">
             {ocrResult ? (
                 <>
-                    <p className="user-status">{ocrResult.Name}님의 건강검진 결과입니다.</p>
+                    <p className="user-status">{ocrResult.Name ? ocrResult.Name : 'N/A'}님의 건강검진 결과입니다.</p>
                     <div className="cards-container">
                         {renderCard("신장", ocrResult.Height)}
-                        {renderCard("체중", ocrResult.Weight)}
-                        {renderCard("비만도", ocrResult.BodyFat, 18.5, 22.9)}
+                        {renderCard("체중", ocrResult?.Weight)}
+                        {renderCard("비만도", ocrResult?.BodyFat, 18.5, 22.9)}
                         {renderCard("시력", ocrResult.Vision)}
                         {renderCard("청력", ocrResult.Hearing)}
                         {renderCard("혈압", ocrResult.BloodPressure, null, null, true)}

@@ -11,6 +11,8 @@ const Signup = () => {
         confirmPassword: "",
         email: "",
     });
+    const [passwordMismatch, setPasswordMismatch] = useState(false);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,56 +21,55 @@ const Signup = () => {
             [name]: value,
         });
 
+        if (name === "confirmPassword" && value.trim() === "") {
+            document
+                .getElementById("confirmPassword")
+                .classList.remove("error", "success");
+            return;
+        }
+
         if (name === "confirmPassword" && signupInfo.password) {
-            const confirmPasswordElement = document.getElementById("confirmPassword");
             if (value === signupInfo.password) {
-                confirmPasswordElement.classList.remove("error");
-                confirmPasswordElement.classList.add("success");
+                document.getElementById("confirmPassword").classList.remove("error");
+                document.getElementById("confirmPassword").classList.add("success");
             } else {
-                confirmPasswordElement.classList.remove("success");
-                confirmPasswordElement.classList.add("error");
+                document.getElementById("confirmPassword").classList.remove("success");
+                document.getElementById("confirmPassword").classList.add("error");
             }
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const url = "http://34.64.241.205:8080";
         if (signupInfo.password !== signupInfo.confirmPassword) {
-            alert("Passwords do not match");
+            setPasswordMismatch(true);
         } else {
+            setPasswordMismatch(false);
             try {
-                const response = await fetch("http://34.64.241.205:8080/members/save", {
+                const response = await fetch(url + "/members/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        'Access-Control-Allow-Credentials': true,
                     },
                     body: JSON.stringify(signupInfo),
                 });
 
-                const responseText = await response.text();  // 응답을 텍스트로 받기
-
-                // JSON 파싱을 시도하고, 실패하면 그대로 문자열로 처리
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (error) {
-                    data = responseText;
-                }
-                console.log(data)
-                console.log(response)
                 if (response.ok) {
+                    const data = await response.text();
+                    console.log(data);
                     if (data === "Member added success") {
                         alert("회원가입 완료");
-                        history.push("/");
+                        history.push("/login");
                     } else if (data === "This Email already Exist") {
+                        // 이미 회원일 경우 signup.js로 남아있음
                         alert("이미 회원입니다.");
                         history.push("/login");
                     } else {
                         alert(data);
                     }
                 } else {
-                    alert("회원가입 실패");
+                    console.error("회원가입 실패");
                 }
             } catch (error) {
                 console.error("오류 발생:", error);

@@ -3,37 +3,25 @@ import "./ImageUpload.css";
 import imageicon from "../assets/imageicon.png";
 import { useHistory } from "react-router-dom";
 
-const ImageUpload = () => {
-    const [image, setImage] = useState(null);
+
+const ImageUpload = (props) => {
+    const [previewUrl, setPreviewUrl] = useState("");
     const history = useHistory();
+    const url = "http://34.64.241.205:8080";
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            setImage(img);
-            processImage(img);
-        }
-    };
+            props.setFile(e.target.files[0]);
+            //   const response = await fetch(url + "/health/upload/", {
+            //     method: "POST",
+            //     headers: { "Content-Type": "multipart/form-data" },
+            //     data: formData,
+            //   });
 
-    // OCR 처리 함수
-    const processImage = async (imgFile) => {
-        const formData = new FormData();
-        formData.append('file', imgFile);
+            // 이미지 선택 후 Sheet 페이지로 이동
+            history.push("/sheet");
 
-        try {
-            const response = await fetch('http://34.64.241.205:8080/uploadAndOcr', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('OCR API request failed');
-            }
-
-            const result = await response.json();
-            history.push({pathname: "/healthresult", state:{ocrResult: result}});
-        } catch (error) {
-            console.error('Error processing image:', error);
+            // reader.readAsDataURL(img);
         }
     };
 
