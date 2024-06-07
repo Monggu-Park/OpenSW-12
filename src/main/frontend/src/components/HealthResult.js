@@ -9,31 +9,46 @@ const HealthResult = () => {
     const location = useLocation();
     const history = useHistory();
     const [ocrResult, setOcrResult] = useState(null);
+    const [loading, setLoading] = useState(true);  // 로딩 상태 초기화
+    const [error, setError] = useState(null);  // 에러 상태 초기화
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);  // 데이터를 가져오는 동안 로딩 상태 활성화
             try {
                 if (location.state && location.state.ocrResult) {
                     console.log("Data from location.state:", location.state.ocrResult);
                     setOcrResult(location.state.ocrResult);
                 } else if (session && session.email) {
-                    const url = "http://34.64.241.205:8080";
-                    const response = await fetch(url + "/health/byEmail/" + session.email);
-                    if (!response.ok) {
-                        throw new Error('Error fetching health data');
-                    }
-                    const data = await response.json();
-                    console.log("Data from server:", data);
-                    setOcrResult(data.HealthCheckResult || data);
+                    const url = `http://34.64.241.205:8080/health/byEmail/${session.email}`;
+                    fetch(url)
+                        .then(res => res.text())  // 여기를 text로 받아오도록 수정
+                        .then(data => {
+                            console.log("Data from server:", data);
+                            setOcrResult(data);  // 텍스트 데이터를 직접 설정
+                        })
+                        .catch(error => {
+                            throw new Error('Error fetching health data');
+                        });
                 }
             } catch (error) {
                 console.error('Error fetching health data:', error);
-                setOcrResult(null);
+                setError(error.message);  // 에러 상태 설정
+            } finally {
+                setLoading(false);  // 로딩 상태 비활성화
             }
         };
 
         fetchData();
     }, [location, session]);
+
+    if (loading) {
+        return <div>Loading...</div>;  // 로딩 중 표시
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;  // 에러 메시지 표시
+    }
 
     const isNormalValue = (value, min, max) => {
         const num = parseFloat(value);
@@ -49,9 +64,11 @@ const HealthResult = () => {
         const [systolic, diastolic] = value.split('/').map(Number);
         return !isNaN(systolic) && !isNaN(diastolic) && (systolic <= 139 || diastolic <= 89);
     };
+
     const handleRecommendClick = () => {
         history.push('/recommend', { name: ocrResult ? ocrResult.Name : 'N/A' });
     };
+
     const renderCard = (title, value, min = null, max = null, isBloodPressure = false) => {
         let className = '';
         if (value === 'N/A' || value === null || value === undefined) {
@@ -93,7 +110,6 @@ const HealthResult = () => {
                         {renderCard("심전도 검사", ocrResult.Electrocardiogram)}
                     </div>
                     <button className="next-button" onClick={handleRecommendClick}>추천 소견 보러가기</button>
-
                 </>
             ) : (
                 <div className="cards-container">
@@ -117,7 +133,6 @@ const HealthResult = () => {
                     {renderCard("심전도 검사", null)}
                 </div>
             )}
-
         </div>
     );
 };
