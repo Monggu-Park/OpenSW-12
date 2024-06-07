@@ -60,6 +60,12 @@ const HealthResult = () => {
         } else if (type === 'proteinuria') {
             className = value === "Negative" ? 'normal' : 'abnormal';
         }
+        else if (type === 'startsWithNormal') {
+            className = value.startsWith("Normal") ? 'normal' : 'abnormal';
+        }
+        else if (min === null && max !== null) {
+            className = (parseFloat(value) <= max) ? 'normal' : 'abnormal';
+        }
         else if (min !== null && max !== null) {
             className = (parseFloat(value) >= min && parseFloat(value) <= max) ? 'normal' : 'abnormal';
         }
@@ -103,7 +109,6 @@ const HealthResult = () => {
                         {renderCard("청력", healthData.healthCheckResult.testItems.hearing)}
                         {renderCard("혈압", healthData.healthCheckResult.testItems.bloodPressure, null, null, true)}
                         {renderCard("요단백", healthData.healthCheckResult.testItems.urinalysis.proteinuria,null, null, false, 'proteinuria')}
-                        {renderCard("요 pH", healthData.healthCheckResult.testItems.urinalysis.ph, 5.5, 7.5)}
                         {renderCard("혈색소", healthData.healthCheckResult.testItems.hemoglobin, 12, 16.5)}
                         {renderCard("혈당", healthData.healthCheckResult.testItems.bloodSugar, 70, 110)}
                         {renderCard("총콜레스테롤", healthData.healthCheckResult.testItems.bloodTest.totalCholesterol, null, 230)}
@@ -111,9 +116,8 @@ const HealthResult = () => {
                         {renderCard("혈청 GPT", healthData.healthCheckResult.testItems.bloodTest.serumGPT, null, 35)}
                         {renderCard("감마 GTP", healthData.healthCheckResult.testItems.bloodTest.gammaGTP, 8, 60)}
                         {renderCard("간염 검사", healthData.healthCheckResult.testItems.hepatitisTest, null, null, false, 'boolean')}
-                        {renderCard("흉부 X-레이", healthData.healthCheckResult.testItems.chestXRay)}
-                        {renderCard("자궁경부 도말 검사", healthData.healthCheckResult.testItems.cervicalSmearCervicalCancerTest)}
-                        {renderCard("심전도 검사", healthData.healthCheckResult.testItems.electrocardiogramECG)}
+                        {renderCard("흉부 X-레이", healthData.healthCheckResult.testItems.chestXRay, null, null, false, 'startsWithNormal')}
+
                     </div>
                     <button className="next-button" onClick={handleRecommendClick}>추천 소견 보러가기</button>
                 </>
