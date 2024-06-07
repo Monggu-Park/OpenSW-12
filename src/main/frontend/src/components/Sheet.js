@@ -67,7 +67,6 @@ function Sheet(props) {
                             <div className="info">
                                 {ocrText ? (
                                     <>
-                                        <p>{ocrText}</p>
                                         <button onClick={handleSheetClick} className="goButton">결과 보러가기</button>
                                     </>
                                 ) : (

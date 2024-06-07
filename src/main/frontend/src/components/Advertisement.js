@@ -1,26 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./Advertisement.css";
 import healthImage from "../assets/ad_image.png";
 import { SessionContext } from "../utils/session.js";
 
 function Advertisement() {
-    const session = useContext(SessionContext);
+    const { session } = useContext(SessionContext);
     const history = useHistory();
-    fetch("http://34.64.241.205:8080/health/allHealth")
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => {
-            console.log(data);
-        });
+
+    useEffect(() => {
+        fetch("http://34.64.241.205:8080/health/allHealth")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            });
+    }, []);
+
     const handleSignupClick = () => {
-        if (session.email !== null) {
+        if (session.email) {
             history.push("/image-");
         } else {
             history.push("/signup");
         }
     };
+
     return (
         <div className="container_adv">
             <div className="advertisement">
@@ -38,7 +41,7 @@ function Advertisement() {
                     </div>
                 </div>
                 <button onClick={handleSignupClick} className="button_adv">
-                    내 건강검진표 등록하기{" "}
+                    내 건강검진표 등록하기
                 </button>
             </div>
         </div>
