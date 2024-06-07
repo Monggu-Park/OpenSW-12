@@ -21,7 +21,7 @@ const Login = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = "https://34.64.241.205:8080";
+        const url = "api";
 
         try {
             const response = await fetch(url + "/members/login", {
