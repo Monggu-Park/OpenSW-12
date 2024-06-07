@@ -9,7 +9,7 @@ function Advertisement() {
     const history = useHistory();
 
     useEffect(() => {
-        fetch("https://34.64.241.205:8080/health/allHealth")
+        fetch("api/health/allHealth")
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
