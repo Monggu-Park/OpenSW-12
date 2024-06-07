@@ -27,7 +27,7 @@ function Sheet(props) {
             return <div>Loading...</div>;
         }*/
     const fetchOcrResult = async () => {
-        const url = "http://34.64.241.205:8080";
+        const url = "https://34.64.241.205:8080";
         const session = getSessionCookie();
         const formData = new FormData();
         console.log(props.file);
