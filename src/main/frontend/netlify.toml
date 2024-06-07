@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+[[redirests]]
+  from = "/*"
+  to = "/login"
+  status = 200
