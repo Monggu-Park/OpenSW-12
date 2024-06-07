@@ -68,7 +68,7 @@ function Sheet(props) {
                                 {ocrText ? (
                                     <>
                                         <p>{ocrText}</p>
-                                        <button onClick={handleSheetClick} className="gobutton">결과 보러가기</button>
+                                        <button onClick={handleSheetClick} className="goButton">결과 보러가기</button>
                                     </>
                                 ) : (
                                     "이미지를 업로드하면 여기에 검진 결과가 표시됩니다."
