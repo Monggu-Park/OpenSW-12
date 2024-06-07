@@ -4,13 +4,14 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    font-family: "Noto Sans", sans-serif;
+    font-weight: bold;
     font-size: 40px;
     background-color: #99daff;
 }
 
 .loading-text {
     margin-bottom: 40px;
+    color: white;
 }
 
 .spinner {

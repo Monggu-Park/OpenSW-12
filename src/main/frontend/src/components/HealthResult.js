@@ -23,9 +23,12 @@ const HealthResult = () => {
                         .then(data => {
                             const parsedData = JSON.parse(data);  // 텍스트를 JSON 객체로 파싱
                             console.log("Parsed Health Data:", parsedData);
-                            console.log("Parsed Healthcheck Data:", parsedData.healthCheckResult);
-                            console.log("Parsed Healthcheck Data testitem:", parsedData.healthCheckResult.testItems);
-
+                            if (parsedData.healthCheckResult) {
+                                console.log("Health Check Result:", parsedData.healthCheckResult); // healthCheckResult 출력
+                                if (parsedData.healthCheckResult.attendingPhysician) {
+                                    console.log("Attending Physician:", parsedData.healthCheckResult.attendingPhysician); // attendingPhysician 출력
+                                }
+                            }
                             setHealthData(parsedData);  // 파싱된 데이터를 상태로 저장
                         })
                         .catch(error => {
@@ -44,7 +47,7 @@ const HealthResult = () => {
         fetchData();
     }, []);
 
-    const renderCard = (title, value, min = null, max = null, isBloodPressure = false) => {
+    const renderCard = (title, value, min = null, max = null, isBloodPressure = false, type= null) => {
         let className = '';
         if (value === 'N/A' || value === null || value === undefined) {
             className = '';
@@ -52,7 +55,12 @@ const HealthResult = () => {
         } else if (isBloodPressure) {
             const [systolic, diastolic] = value.split('/').map(Number);
             className = (systolic <= 139 && diastolic <= 89) ? 'normal' : 'abnormal';
-        } else if (min !== null && max !== null) {
+        } else if (type === 'boolean') {
+            className = value === "Normal" ? 'normal' : 'abnormal';
+        } else if (type === 'proteinuria') {
+            className = value === "Negative" ? 'normal' : 'abnormal';
+        }
+        else if (min !== null && max !== null) {
             className = (parseFloat(value) >= min && parseFloat(value) <= max) ? 'normal' : 'abnormal';
         }
         return <Card title={title} status={value ? value : 'N/A'} className={className} />;
@@ -66,16 +74,19 @@ const HealthResult = () => {
         return <div>Error: {error}</div>;
     }
 
-    /*const handleRecommendClick = () => {
-        if (healthData &&healthData.healthCheckResult && healthData.healthCheckResult.attendingPhysician && healthData.healthCheckResult.attendingPhysician.opinionsAndMeasures) {
+    const handleRecommendClick = () => {
+        const opinionsAndMeasures = healthData?.healthCheckResult?.attendingPhysician?.opinionsAndMeasures;
+
+        if (opinionsAndMeasures) {
             history.push('/recommend', {
-                opinionsAndMeasures: healthData.healthCheckResult.attendingPhysician.opinionsAndMeasures
+                opinionsAndMeasures
             });
         } else {
-            console.log("No data to send");
+            console.log("No data to send or missing data fields");
         }
     };
-*/
+
+
 
 
 
@@ -87,19 +98,19 @@ const HealthResult = () => {
                     <div className="cards-container">
                         {renderCard("신장", healthData.healthCheckResult.testItems.height)}
                         {renderCard("체중", healthData.healthCheckResult.testItems.weight)}
-                        {renderCard("비만도", healthData.healthCheckResult.testItems.bodyFat, 18.5, 22.9)}
+                        {renderCard("비만도", healthData.healthCheckResult.testItems.bodyFat, null, 110)}
                         {renderCard("시력", healthData.healthCheckResult.testItems.vision)}
                         {renderCard("청력", healthData.healthCheckResult.testItems.hearing)}
                         {renderCard("혈압", healthData.healthCheckResult.testItems.bloodPressure, null, null, true)}
-                        {renderCard("요단백", healthData.healthCheckResult.testItems.urinalysis.proteinuria, 5.5, 7.5)}
-                        {renderCard("요 pH", healthData.healthCheckResult.testItems.urinalysis.ph)}
-                        {renderCard("혈색소", healthData.healthCheckResult.testItems.hemoglobin, 12, 16)}
+                        {renderCard("요단백", healthData.healthCheckResult.testItems.urinalysis.proteinuria,null, null, false, 'proteinuria')}
+                        {renderCard("요 pH", healthData.healthCheckResult.testItems.urinalysis.ph, 5.5, 7.5)}
+                        {renderCard("혈색소", healthData.healthCheckResult.testItems.hemoglobin, 12, 16.5)}
                         {renderCard("혈당", healthData.healthCheckResult.testItems.bloodSugar, 70, 110)}
-                        {renderCard("총콜레스테롤", healthData.healthCheckResult.testItems.bloodTest.totalCholesterol, 140, 200)}
+                        {renderCard("총콜레스테롤", healthData.healthCheckResult.testItems.bloodTest.totalCholesterol, null, 230)}
                         {renderCard("혈청 GOT", healthData.healthCheckResult.testItems.bloodTest.serumGOT, null, 40)}
                         {renderCard("혈청 GPT", healthData.healthCheckResult.testItems.bloodTest.serumGPT, null, 35)}
-                        {renderCard("감마 GTP", healthData.healthCheckResult.testItems.bloodTest.gammaGTP, null, 60)}
-                        {renderCard("간염 검사", healthData.healthCheckResult.testItems.hepatitisTest)}
+                        {renderCard("감마 GTP", healthData.healthCheckResult.testItems.bloodTest.gammaGTP, 8, 60)}
+                        {renderCard("간염 검사", healthData.healthCheckResult.testItems.hepatitisTest, null, null, false, 'boolean')}
                         {renderCard("흉부 X-레이", healthData.healthCheckResult.testItems.chestXRay)}
                         {renderCard("자궁경부 도말 검사", healthData.healthCheckResult.testItems.cervicalSmearCervicalCancerTest)}
                         {renderCard("심전도 검사", healthData.healthCheckResult.testItems.electrocardiogramECG)}

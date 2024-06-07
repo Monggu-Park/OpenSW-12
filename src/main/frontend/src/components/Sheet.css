@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 30px 20px 10px 20px;
-    font-family: 'Spoqa Han Sans', sans-serif;
 }
 
 .sheet {
@@ -47,7 +46,6 @@
     padding: 10px 20px;
     font-size: 18px;
     font-weight: bold;
-    font-family: 'Spoqa Han Sans', sans-serif;
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
