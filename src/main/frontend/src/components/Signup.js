@@ -41,7 +41,7 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = "http://34.64.241.205:8080";
+        const url = "https://34.64.241.205:8080";
         if (signupInfo.password !== signupInfo.confirmPassword) {
             setPasswordMismatch(true);
         } else {
