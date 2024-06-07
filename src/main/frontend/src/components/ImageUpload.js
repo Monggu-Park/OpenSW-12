@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 const ImageUpload = (props) => {
     const [previewUrl, setPreviewUrl] = useState("");
     const history = useHistory();
-    const url = "http://34.64.241.205:8080";
+    const url = "https://34.64.241.205:8080";
 
     const handleImageChange = async (e) => {
         if (e.target.files && e.target.files[0]) {
