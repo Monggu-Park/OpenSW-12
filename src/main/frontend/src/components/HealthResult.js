@@ -16,7 +16,7 @@ const HealthResult = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const url = session && session.email ? `http://34.64.241.205:8080/health/byEmail/${session.email}` : null;
+                const url = session && session.email ? `https://34.64.241.205:8080/health/byEmail/${session.email}` : null;
                 if (url) {
                     fetch(url)
                         .then(res => res.text())  // 서버로부터 텍스트 형태로 데이터 받기
