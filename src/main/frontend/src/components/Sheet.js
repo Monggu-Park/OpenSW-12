@@ -27,7 +27,7 @@ function Sheet(props) {
             return <div>Loading...</div>;
         }*/
     const fetchOcrResult = async () => {
-        const url = "/api";
+        const url = "api";
         const session = getSessionCookie();
         const formData = new FormData();
         console.log(props.file);
