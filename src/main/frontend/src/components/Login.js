@@ -21,7 +21,7 @@ const Login = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = "api";
+        const url = "/api";
 
         try {
             const response = await fetch(url + "/members/login", {
