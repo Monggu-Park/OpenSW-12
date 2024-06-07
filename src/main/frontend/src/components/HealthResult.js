@@ -8,92 +8,103 @@ const HealthResult = () => {
     const session = getSessionCookie();
     const location = useLocation();
     const history = useHistory();
-    const [ocrResult, setOcrResult] = useState(null);
+    const [healthData, setHealthData] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
-                if (location.state && location.state.ocrResult) {
-                    console.log("Data from location.state:", location.state.ocrResult);
-                    setOcrResult(location.state.ocrResult);
-                } else if (session && session.email) {
-                    const url = "http://34.64.241.205:8080";
-                    const response = await fetch(url + "/health/byEmail/" + session.email);
-                    if (!response.ok) {
-                        throw new Error('Error fetching health data');
-                    }
-                    const data = await response.json();
-                    console.log("Data from server:", data);
-                    setOcrResult(data.HealthCheckResult || data);
+                const url = session && session.email ? `http://34.64.241.205:8080/health/byEmail/${session.email}` : null;
+                if (url) {
+                    fetch(url)
+                        .then(res => res.text())  // 서버로부터 텍스트 형태로 데이터 받기
+                        .then(data => {
+                            const parsedData = JSON.parse(data);  // 텍스트를 JSON 객체로 파싱
+                            console.log("Parsed Health Data:", parsedData);
+                            console.log("Parsed Healthcheck Data:", parsedData.healthCheckResult);
+                            console.log("Parsed Healthcheck Data testitem:", parsedData.healthCheckResult.testItems);
+
+                            setHealthData(parsedData);  // 파싱된 데이터를 상태로 저장
+                        })
+                        .catch(error => {
+                            console.error('Error fetching health data:', error);
+                            setError('Failed to fetch health data');
+                        });
                 }
             } catch (error) {
-                console.error('Error fetching health data:', error);
-                setOcrResult(null);
+                console.error('Error during fetch operation:', error);
+                setError(error.toString());
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchData();
-    }, [location, session]);
+    }, []);
 
-    const isNormalValue = (value, min, max) => {
-        const num = parseFloat(value);
-        return !isNaN(num) && num >= min && num <= max;
-    };
-
-    const isMaxValueNormal = (value, max) => {
-        const num = parseFloat(value);
-        return !isNaN(num) && num <= max;
-    };
-
-    const isBloodPressureNormal = (value) => {
-        const [systolic, diastolic] = value.split('/').map(Number);
-        return !isNaN(systolic) && !isNaN(diastolic) && (systolic <= 139 || diastolic <= 89);
-    };
-    const handleRecommendClick = () => {
-        history.push('/recommend', { name: ocrResult ? ocrResult.Name : 'N/A' });
-    };
     const renderCard = (title, value, min = null, max = null, isBloodPressure = false) => {
         let className = '';
         if (value === 'N/A' || value === null || value === undefined) {
             className = '';
-            value='N/A';
+            value = 'N/A';
         } else if (isBloodPressure) {
-            className = isBloodPressureNormal(value) ? 'normal' : 'abnormal';
+            const [systolic, diastolic] = value.split('/').map(Number);
+            className = (systolic <= 139 && diastolic <= 89) ? 'normal' : 'abnormal';
         } else if (min !== null && max !== null) {
-            className = isNormalValue(value, min, max) ? 'normal' : 'abnormal';
-        } else if (max !== null) {
-            className = isMaxValueNormal(value, max) ? 'normal' : 'abnormal';
+            className = (parseFloat(value) >= min && parseFloat(value) <= max) ? 'normal' : 'abnormal';
         }
         return <Card title={title} status={value ? value : 'N/A'} className={className} />;
     };
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    /*const handleRecommendClick = () => {
+        if (healthData &&healthData.healthCheckResult && healthData.healthCheckResult.attendingPhysician && healthData.healthCheckResult.attendingPhysician.opinionsAndMeasures) {
+            history.push('/recommend', {
+                opinionsAndMeasures: healthData.healthCheckResult.attendingPhysician.opinionsAndMeasures
+            });
+        } else {
+            console.log("No data to send");
+        }
+    };
+*/
+
+
+
     return (
         <div className="health-result">
-            {ocrResult ? (
+            {healthData && healthData.healthCheckResult ? (
                 <>
-                    <p className="user-status">{ocrResult.Name ? ocrResult.Name : 'N/A'}님의 건강검진 결과입니다.</p>
+                    <p className="user-status">당신의 건강검진 결과입니다.</p>
                     <div className="cards-container">
-                        {renderCard("신장", ocrResult.Height)}
-                        {renderCard("체중", ocrResult?.Weight)}
-                        {renderCard("비만도", ocrResult?.BodyFat, 18.5, 22.9)}
-                        {renderCard("시력", ocrResult.Vision)}
-                        {renderCard("청력", ocrResult.Hearing)}
-                        {renderCard("혈압", ocrResult.BloodPressure, null, null, true)}
-                        {renderCard("요단백", ocrResult.Proteinuria, 5.5, 7.5)}
-                        {renderCard("요 pH", ocrResult.pH)}
-                        {renderCard("혈색소", ocrResult.Hemoglobin, 12, 16)}
-                        {renderCard("혈당", ocrResult.BloodSugar, 70, 110)}
-                        {renderCard("총콜레스테롤", ocrResult.TotalCholesterol, 140, 200)}
-                        {renderCard("혈청 GOT", ocrResult.SerumGOT, null, 40)}
-                        {renderCard("혈청 GPT", ocrResult.SerumGPT, null, 35)}
-                        {renderCard("감마 GTP", ocrResult.GammaGTP, null, 60)}
-                        {renderCard("간염 검사", ocrResult.HepatitisTest)}
-                        {renderCard("흉부 X-레이", ocrResult.ChestXRay)}
-                        {renderCard("자궁경부 도말 검사", ocrResult.CervicalSmear)}
-                        {renderCard("심전도 검사", ocrResult.Electrocardiogram)}
+                        {renderCard("신장", healthData.healthCheckResult.testItems.height)}
+                        {renderCard("체중", healthData.healthCheckResult.testItems.weight)}
+                        {renderCard("비만도", healthData.healthCheckResult.testItems.bodyFat, 18.5, 22.9)}
+                        {renderCard("시력", healthData.healthCheckResult.testItems.vision)}
+                        {renderCard("청력", healthData.healthCheckResult.testItems.hearing)}
+                        {renderCard("혈압", healthData.healthCheckResult.testItems.bloodPressure, null, null, true)}
+                        {renderCard("요단백", healthData.healthCheckResult.testItems.urinalysis.proteinuria, 5.5, 7.5)}
+                        {renderCard("요 pH", healthData.healthCheckResult.testItems.urinalysis.ph)}
+                        {renderCard("혈색소", healthData.healthCheckResult.testItems.hemoglobin, 12, 16)}
+                        {renderCard("혈당", healthData.healthCheckResult.testItems.bloodSugar, 70, 110)}
+                        {renderCard("총콜레스테롤", healthData.healthCheckResult.testItems.bloodTest.totalCholesterol, 140, 200)}
+                        {renderCard("혈청 GOT", healthData.healthCheckResult.testItems.bloodTest.serumGOT, null, 40)}
+                        {renderCard("혈청 GPT", healthData.healthCheckResult.testItems.bloodTest.serumGPT, null, 35)}
+                        {renderCard("감마 GTP", healthData.healthCheckResult.testItems.bloodTest.gammaGTP, null, 60)}
+                        {renderCard("간염 검사", healthData.healthCheckResult.testItems.hepatitisTest)}
+                        {renderCard("흉부 X-레이", healthData.healthCheckResult.testItems.chestXRay)}
+                        {renderCard("자궁경부 도말 검사", healthData.healthCheckResult.testItems.cervicalSmearCervicalCancerTest)}
+                        {renderCard("심전도 검사", healthData.healthCheckResult.testItems.electrocardiogramECG)}
                     </div>
                     <button className="next-button" onClick={handleRecommendClick}>추천 소견 보러가기</button>
-
                 </>
             ) : (
                 <div className="cards-container">
@@ -117,7 +128,6 @@ const HealthResult = () => {
                     {renderCard("심전도 검사", null)}
                 </div>
             )}
-
         </div>
     );
 };

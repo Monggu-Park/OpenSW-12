@@ -19,7 +19,7 @@ const Routes = () => {
     const [file, setFile] = useState(null);
 
     return (
-        <SessionContext.Provider value={session}>
+        <SessionContext.Provider value={{session, setSession}}>
             <Router>
                 <Header />
                 <Switch>
